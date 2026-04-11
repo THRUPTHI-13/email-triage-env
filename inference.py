@@ -1,26 +1,32 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+from typing import Optional
 
 app = FastAPI()
 
-# ✅ Correct input format for OpenEnv
+# ✅ Flexible input (accepts ANY fields OpenEnv sends)
 class InputData(BaseModel):
-    input: str
+    input: Optional[str] = None
+    route: Optional[str] = None
+    priority: Optional[int] = None
 
-# ✅ Required endpoint
+    class Config:
+        extra = "allow"   # 🔥 VERY IMPORTANT (accept unknown fields)
+
+# ✅ Required
 @app.post("/reset")
 def reset():
     return {"status": "ok"}
 
-# ✅ Required endpoint
+# ✅ Required
 @app.post("/step")
 def step(data: InputData):
-    user_input = data.input
+    # handle different possible inputs
+    user_input = data.input or data.route or "default"
 
-    # 🔥 Your logic (you can change this part later)
-    result = f"You said: {user_input}"
+    result = f"Processed: {user_input}"
 
-    # ✅ VERY IMPORTANT: return format
+    # ✅ REQUIRED FORMAT
     return {
         "output": result
     }
