@@ -3,9 +3,10 @@ from pydantic import Field
 
 
 class EmailAction(Action):
-    route: str = Field(..., description="Route of email")
-    priority: str = Field(..., description="Priority of email")
+    route: str
+    priority: str
 
 
 class EmailObservation(Observation):
     email: str = Field(default="")
+    task: str = Field(default="")   # ✅ ADD THIS
