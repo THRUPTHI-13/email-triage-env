@@ -1,40 +1,88 @@
----
-title: email-env
-emoji: "🚀"
-colorFrom: blue
-colorTo: green
-sdk: docker
----
+# India AI Hackathon 2026 - OpenEnv Project
 
-# Project Title
+## Project Overview
 
-> Short one-line description of your project
+This project is built for the **India AI Hackathon 2026** using the OpenEnv framework.  
+It demonstrates a reinforcement-learning style environment where an agent interacts with a simulated system and receives rewards based on performance.
+
+The goal of the project is to efficiently process inputs, generate predictions/actions, and compute a final reward score for evaluation.
 
 ---
 
-## Overview
+## Key Features
 
-This project is built to solve **[problem]** by providing **[solution]**.  
-It helps users to **[main purpose/use-case]**.
+- OpenEnv-compatible inference pipeline
+- Reward-based evaluation system
+- Modular and easy-to-extend architecture
+- Docker-ready setup for reproducibility
+- Supports automated evaluation by hackathon system
 
 ---
 
-## Features
+## Project Structure
 
-- Feature 1 (e.g., User Authentication)
-- Feature 2 (e.g., Real-time Data Updates)
-- Feature 3 (e.g., Responsive UI)
-- Feature 4 (e.g., API Integration)
+├── inference.py # Main inference logic
+├── Dockerfile # Container setup
+├── requirements.txt # Dependencies
+├── README.md # Project documentation
+
+---
+
+## How It Works
+
+1. The environment sends input data to `inference.py`
+2. The model processes the input and generates outputs
+3. Each output is assigned a reward value
+4. Final score is computed as:
+   score = sum(rewards) / len(rewards)
+5. The score is returned for evaluation
+
+---
+
+## ⚙️ Setup & Installation
+
+### 1. Clone the repository
+
+```bash
+git clone <your-repo-link>
+cd <repo-folder>
+```
+
+### 2. Install dependencies
+
+pip install -r requirements.txt
+
+### 3. Run locally
+
+python inference.py
+
+---
+
+## Docker Setup
+
+### 1. Build Docker image
+
+docker build -t openenv-project .
+
+### 2. Run container
+
+docker run openenv-project
+
+---
+
+## Evaluation Logic
+
+-Rewards are collected for each inference step
+-Final score is calculated using average reward
+-Higher score indicates better model performance
 
 ---
 
 ## Tech Stack
 
-- **Frontend:** React / HTML / CSS / JS
-- **Backend:** Node.js / Express
-- **Database:** MongoDB / Firebase
-- **Other Tools:** Git, APIs, etc.
+-Python
+-OpenEnv Framework
+-Docker
+-Reinforcement Learning concepts
 
 ---
-
-## Project Structure

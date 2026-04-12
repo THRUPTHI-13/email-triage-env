@@ -7,12 +7,13 @@ from models import EmailAction
 from server.email_env_environment import EmailEnvironment
 
 
+
 client = OpenAI(
     base_url=os.environ.get("API_BASE_URL"),
-    api_key=os.environ.get("API_KEY"),
+    api_key=os.environ.get("API_KEY", "test"),  # fallback for local
 )
 
-MODEL_NAME = os.environ.get("MODEL_NAME")
+MODEL_NAME = os.environ.get("MODEL_NAME", "Qwen/Qwen2.5-72B-Instruct")
 
 
 def log_start(task: str, env: str, model: str):
@@ -28,14 +29,6 @@ def log_step(step: int, action: str, reward: float, done: bool, error):
     )
 
 
-def log_end(success: bool, steps: int, rewards: List[float]):
-    rewards_str = ",".join(f"{r:.2f}" for r in rewards)
-    print(
-        f"[END] success={str(success).lower()} steps={steps} rewards={rewards_str}",
-        flush=True,
-    )
-
-
 def get_action(email: str) -> str:
     prompt = f"""
 You are an email triage agent.
@@ -47,7 +40,7 @@ Decide:
 - route: billing / tech / general / spam
 - priority: high / medium / low
 
-Output:
+Output strictly in format:
 route=<route>,priority=<priority>
 """
 
@@ -63,15 +56,15 @@ route=<route>,priority=<priority>
         return "route=general,priority=low"
 
 
-async def run_task(task_name):
+async def run_task(task_name: str):
     env = EmailEnvironment()
 
-    # 🔥 FORCE TASK (IMPORTANT)
+   
     env.current_task = task_name
     env.emails = env.tasks[task_name]
     env.index = 0
 
-    rewards = []
+    rewards: List[float] = []
     steps = 0
 
     log_start(task_name, "email_env", MODEL_NAME)
@@ -98,7 +91,7 @@ async def run_task(task_name):
 
         reward = obs.reward
 
-        # 🔥 FORCE SAFE RANGE
+        
         reward = max(0.1, min(0.9, reward))
 
         rewards.append(reward)
@@ -109,12 +102,22 @@ async def run_task(task_name):
         if obs.done:
             break
 
-    success = sum(rewards) > 0
-    log_end(success, steps, rewards)
+   
+    score = sum(rewards) / (len(rewards) * 1.0)
+    score = max(0.1, min(0.9, score))
+
+    success = score > 0.2
+
+    rewards_str = ",".join(f"{r:.2f}" for r in rewards)
+
+    print(
+        f"[END] success={str(success).lower()} steps={steps} score={score:.3f} rewards={rewards_str}",
+        flush=True,
+    )
 
 
 async def main():
-    # 🔥 RUN ALL 3 TASKS
+   
     await run_task("easy")
     await run_task("medium")
     await run_task("hard")

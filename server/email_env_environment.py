@@ -41,7 +41,7 @@ class EmailEnvironment(Environment):
     def reset(self) -> EmailObservation:
         self._state = State(episode_id=str(uuid4()), step_count=0)
 
-        # 🔁 rotate tasks
+        
         if self.current_task == "easy":
             self.current_task = "medium"
         elif self.current_task == "medium":
@@ -54,7 +54,7 @@ class EmailEnvironment(Environment):
 
         return EmailObservation(
     email=str(self.emails[self.index]),
-    task=self.current_task,   # ✅ ADD THIS
+    task=self.current_task,   
     reward=0.1,
     done=False,
 )
@@ -70,7 +70,7 @@ class EmailEnvironment(Environment):
         route = action.route
         priority = action.priority
 
-        # ✅ REWARD LOGIC (STRICTLY BETWEEN 0 and 1)
+        
         if route == correct_route and priority == correct_priority:
             reward = 0.9
         elif route == correct_route:
@@ -78,18 +78,18 @@ class EmailEnvironment(Environment):
         else:
             reward = 0.2
 
-        # penalty
+        
         if priority != correct_priority:
             reward -= 0.1
 
-        # bonus
+        
         if current_email[2] == "angry" and current_email[3] == "VIP":
             reward += 0.1
 
-        # clamp (STRICT RANGE)
+        
         reward = max(0.1, min(0.9, reward))
 
-        # move next
+       
         self.index += 1
         done = self.index >= len(self.emails)
 
@@ -97,7 +97,7 @@ class EmailEnvironment(Environment):
 
         return EmailObservation(
     email=next_email,
-    task=self.current_task,   # ✅ ADD THIS
+    task=self.current_task,   
     reward=reward,
     done=done,
 )
