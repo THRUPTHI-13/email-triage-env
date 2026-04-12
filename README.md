@@ -1,88 +1,66 @@
-# India AI Hackathon 2026 - OpenEnv Project
+---
+title: email-env
+emoji: "🚀"
+colorFrom: blue
+colorTo: green
+sdk: docker
+---
 
-## Project Overview
+# Project Title
 
-This project is built for the **India AI Hackathon 2026** using the OpenEnv framework.  
-It demonstrates a reinforcement-learning style environment where an agent interacts with a simulated system and receives rewards based on performance.
-
-The goal of the project is to efficiently process inputs, generate predictions/actions, and compute a final reward score for evaluation.
+Email Environment - OpenEnv Hackathon Project
 
 ---
 
-## Key Features
+## Overview
 
-- OpenEnv-compatible inference pipeline
-- Reward-based evaluation system
-- Modular and easy-to-extend architecture
-- Docker-ready setup for reproducibility
-- Supports automated evaluation by hackathon system
+This project is built for the India AI Hackathon 2026 using OpenEnv.
+
+It processes environment inputs, runs inference, and returns reward-based evaluation scores.
 
 ---
 
-## Project Structure
+## Features
 
-├── inference.py # Main inference logic
-├── Dockerfile # Container setup
-├── requirements.txt # Dependencies
-├── README.md # Project documentation
+- OpenEnv compatible inference pipeline
+- Automated evaluation system
+- Reward based scoring
+- Docker deployment support
 
 ---
 
 ## How It Works
 
-1. The environment sends input data to `inference.py`
-2. The model processes the input and generates outputs
-3. Each output is assigned a reward value
-4. Final score is computed as:
-   score = sum(rewards) / len(rewards)
-5. The score is returned for evaluation
+Input -> inference.py -> processing -> rewards -> final score
+
+Score formula:
+
+score = sum(rewards) / len(rewards)
 
 ---
 
-## ⚙️ Setup & Installation
+## Setup Instructions
 
-### 1. Clone the repository
-
-```bash
-git clone <your-repo-link>
-cd <repo-folder>
-```
-
-### 2. Install dependencies
-
+Install dependencies:
 pip install -r requirements.txt
 
-### 3. Run locally
-
+Run locally:
 python inference.py
 
 ---
 
-## Docker Setup
+## Docker
 
-### 1. Build Docker image
-
+Build image:
 docker build -t openenv-project .
 
-### 2. Run container
-
+Run container:
 docker run openenv-project
 
 ---
 
-## Evaluation Logic
+## Notes
 
--Rewards are collected for each inference step
--Final score is calculated using average reward
--Higher score indicates better model performance
-
----
-
-## Tech Stack
-
--Python
--OpenEnv Framework
--Docker
--Reinforcement Learning concepts
-
----
+- Keep structure unchanged
+- Ensure inference.py runs without errors
+- Do not modify OpenEnv config files
